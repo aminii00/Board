@@ -212,7 +212,7 @@ margin: 0;
 	<section class="notice">
 		<div class="page-title">
 			<div class="container">
-				<h3>공지사항</h3>
+				<h3>게시판</h3>
 			</div>
 		</div>
 
@@ -222,7 +222,7 @@ margin: 0;
 				<div class="search-window">
 					<form action="">
 						<div class="search-wrap">
-							<label for="search" class="blind">공지사항 내용 검색</label> <input
+							<label for="search" class="blind">게시판 내용 검색</label> <input
 								id="search" type="search" name="search"
 								placeholder="검색어를 입력해주세요." value="">
 							<button type="submit" class="btn btn-dark">검색</button>
