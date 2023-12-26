@@ -15,14 +15,25 @@ request.setCharacterEncoding("utf-8");
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
 	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
+<script type="text/javascript">
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $("#fileImg_preview").attr("src", e.target.result);
+        };
 
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>
 <title>글쓰기 창</title>
 </head>
 <body>
 	<div class="container" role="main">
 		<h2>board Form</h2>
 		<form name="form" id="form" role="form" method="post"
-			action="${pageContext.request.contextPath}/board/saveBoard">
+			action="${pageContext.request.contextPath}/board/saveBoard.do">
 			<div class="mb-3">
 				<label for="title">제목</label> <input type="text"
 					class="form-control" name="title" id="title"
@@ -39,20 +50,23 @@ request.setCharacterEncoding("utf-8");
 				<textarea class="form-control" rows="5" name="content" id="content"
 					placeholder="내용을 입력해 주세요"></textarea>
 			</div>
+			
 			<div class="mb-3">
-				<label for="tag">사진</label> <input type="file" name="imageFileName"
-					onchange="readURL(this);">
-			</div>
+            <label for="tag">사진</label>
+            <input type="file" name="imageFileName" onchange="readURL(this);">
+            <img id="fileImg_preview" src="#" alt="사진 미리보기" style="display: none; max-width: 100%;">
+        </div>
+			
 			<div class="mb-3">
 				<label for="tag">TAG</label> <input type="text" class="form-control"
 					name="tag" id="tag" placeholder="태그를 입력해 주세요">
 			</div>
-		</form>
+		
 		<div>
-			<button type="submit" class="btn btn-sm btn-primary" id="btnSave">저장</button>
+			<button type="submit" class="btn btn-sm btn-primary" id="btnSave" >저장</button>
 			<button type="button" class="btn btn-sm btn-primary" id="btnList">목록</button>
 		</div>
-
 	</div>
+</form>
 </body>
 </html>

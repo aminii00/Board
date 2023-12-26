@@ -201,12 +201,74 @@ section.notice {
 	height: 1px;
 }
 
-.btn-toform{
-width: 60px;
-height:30px;
-margin: 0;
+.btn-toform {
+	width: 60px;
+	height: 30px;
+	margin: 0;
 }
 
+
+
+.btn-square {
+  width: 20px;
+  height: 20px;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.btn-border {
+  border: 1px solid #b3b3b3;
+}
+
+/*페이지 버튼*/
+.ul-li {
+  margin-top: 60px;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+.li-btn {
+  padding-left: 10px;
+}
+.btn-2 {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  color: rgb(51, 51, 51);
+  line-height: 34px;
+}
+
+hr.line-black {
+  border: 0px;
+  height: 2px;
+  background-color: black;
+  margin: 4px;
+}
+hr.line-gray {
+  border: 0px;
+  height: 1px;
+  background-color: #b3b3b3;
+  margin: 4px;
+}
+.btn-2 {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  color: rgb(51, 51, 51);
+  line-height: 34px;
+}
 </style>
 <body>
 	<section class="notice">
@@ -247,30 +309,87 @@ margin: 0;
 					<!--1:1문의 리스트를 넣을 곳-->
 
 					<tbody>
-						 <c:choose>
-                            <c:when test="${not empty boardList}">
-                                <c:forEach var="board" items="${boardList}">
-                                    <!-- 게시물 목록 부분 -->
-                                </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <tr>
-                                    <td colspan="3">게시물이 없습니다.</td>
-                                </tr>
-                            </c:otherwise>
-                        </c:choose>
-						
+						<c:choose>
+							<c:when test="${not empty boardList}">
+								<c:forEach var="boardList" items="${boardList}">
+									<tr>
+										<td>${boardList.boardNo}</td>
+										<td
+											onclick="location.href='${contextPath}/board/mainDetail.do?boardNo=${boardList.boardNo}';">${boardList.title}</td>
+										<td>${boardList.formattedCreDate}</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td colspan="3">게시물이 없습니다.</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
 				</table>
-				 <div style="float: right">
-            <button
-              class="btn-toform btn-dark"
-              onclick="location.href='${contextPath}/board/mainDetailForm.do'"
+
+				<br>
+				<div style="float: right">
+					<button class="btn-toform btn-dark"
+						onclick="location.href='${contextPath}/board/mainDetailForm.do'">
+						글쓰기</button>
+				</div>
+
+
+				<!-- 페이징 처리 -->
+			 <div>
+      <ul class="ul-li">
+        <c:if test="${section>1}">
+          <li class="li-btn">
+            <a
+              href="${contextPath}/board/main.do?section=${section-1}&pageNum=1"
+              class="btn-2 btn-square bg-white btn-border"
             >
-              글쓰기
-            </button>
-          </div>
-			</div>
-		</div>
+              <img
+                width="20px"
+                height="20px"
+                src="${contextPath}/img/icon/prev.png"
+                alt="prev"
+              />
+            </a>
+          </li>
+        </c:if>
+        <c:set
+          var="end"
+          value="${Math.ceil((totalBoardListNum - (section-1)*100) div 10)}"
+        />
+        <c:if test="${end>10}">
+          <c:set var="end" value="10" />
+        </c:if>
+        <c:forEach begin="1" end="${end}" var="i">
+          <li class="li-btn">
+            <a
+              href="${contextPath}/board/main.do?section=${section}&pageNum=${i}"
+              class="btn-2 btn-square bg-white btn-border"
+              >${((section-1)*10)+i}</a
+            >
+          </li>
+        </c:forEach>
+        <c:if test="${section*100<totalBoardListNum}">
+          <li class="li-btn">
+            <a
+              href="${contextPath}/board/main.do?section=${section+1}&pageNum=1"
+              class="btn-2 btn-square bg-white btn-border"
+            >
+              <img
+                width="20px"
+                height="20px"
+                src="${contextPath}/img/icon/next.png"
+                alt="next"
+              />
+            </a>
+          </li>
+        </c:if>
+      </ul>
+    </div>
+    
+    
+    
 
 	</section>
 </body>
