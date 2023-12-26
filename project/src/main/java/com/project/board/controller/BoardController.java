@@ -10,4 +10,5 @@ public interface BoardController {
 	  public ModelAndView form( HttpServletRequest request, HttpServletResponse response) throws Exception;
 	  public ModelAndView main( HttpServletRequest request, HttpServletResponse response) throws Exception;
 	  public ModelAndView saveBoard( HttpServletRequest request, HttpServletResponse response) throws Exception;
+	  public ModelAndView boardDetail( HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

@@ -2,37 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.board.dao.BoardDAO">
-	<resultMap id="BoardResult" type="boardVO">
-		<result property="boardNo" column="boardNo" />
-		<result property="title" column="title" />
-		<result property="content" column="content" />
-		<result property="creDate" column="creDate" />
-		<result property="status" column="status" />
-		<result property="parentNo" column="parentNo" />
-		<result property="name" column="name" />
-		<result property="imageFileName" column="imageFileName" />
-		<result property="tag" column="tag" />
-	</resultMap>
+    <resultMap id="BoardResult" type="BoardVO">
+        <result property="boardNo" column="boardNo" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="creDate" column="creDate" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime" />
+        <result property="status" column="status" />
+        <result property="parentNo" column="parentNo" />
+        <result property="name" column="name" />
+        <result property="imageFileName" column="imageFileName" />
+        <result property="tag" column="tag" />
+    </resultMap>
 
-	<select id="boardList" resultMap="BoardResult">
-		select * from t_board
+    <select id="boardList" resultMap="BoardResult">
+        select * from t_board
+    </select>
+
+    <select id="NewBoardNo" resultType="int">
+        <![CDATA[
+            SELECT ifnull(MAX(boardNo),0)+1 FROM t_board;
+        ]]>
+    </select>
+    
+    <select id="boardSearchList" parameterType="int" resultType="BoardVO">
+        <![CDATA[
+            SELECT * FROM t_board where boardNo = #{boardNo};
+        ]]>
+    </select>
+
+    <insert id="saveBoard" parameterType="BoardVO">
+        <![CDATA[
+            insert into t_board(boardNo, title, content, status, parentNo, name, imageFileName, tag)
+            values(#{boardNo}, #{title}, #{content}, '대기중', 0, #{name}, #{imageFileName}, #{tag})
+        ]]>
+    </insert>
+    
+    
+    <select id="selectBoardListWithPagingMap" parameterType="java.util.Map" resultMap="BoardResult">
+    select * from t_board
+    limit #{start}, 10
+</select>
+
+	<select id="selectBoardListTotalNum" resultType="int">
+		select count(boardNo) from t_board 
 	</select>
-
-
-	<select id="NewBoardNo" resultType="int">
-		<![CDATA[
-			SELECT ifnull(MAX(memberNo),0)+1 FROM t_board;
-		]]>
-	</select>
-	
-	<insert id="saveBoard" parameterType="boardVO">
-		<![CDATA[
-		insert into t_board(boardNo, title, content, creDate, status, parentNo, name, 
-		imageFileName, tag)
-		values(#{boardNo}, #{title}, #{content}, #{creDate}, '대기중', 0, 
-		#{name}, #{imageFileName}, #{tag})
-		]]>
-	</insert>
 	
 	
-</mapper> 
+</mapper>
