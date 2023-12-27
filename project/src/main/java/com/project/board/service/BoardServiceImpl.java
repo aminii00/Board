@@ -48,8 +48,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int selectBoardListTotalNum() {
-		int num = boardDAO.selectBoardListTotalNum();
+	public int selectBoardListTotalNum(Map pagingMap) {
+		int num = boardDAO.selectBoardListTotalNum(pagingMap);
 		return num;
 	}
 }

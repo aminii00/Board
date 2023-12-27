@@ -39,6 +39,8 @@ section.notice {
 }
 
 #board-search .search-window .search-wrap {
+	display: flex;
+	align-items: center;
 	position: relative;
 	/*   padding-right: 124px; */
 	margin: 0 auto;
@@ -68,6 +70,13 @@ section.notice {
 	width: 108px;
 	padding: 0;
 	font-size: 16px;
+}
+
+#category {
+	height: 40px;
+	width: 20%;
+	margin: 2px;
+	border: 1px solid #ccc;
 }
 
 .board-table {
@@ -207,74 +216,76 @@ section.notice {
 	margin: 0;
 }
 
-
-
 .btn-square {
-  width: 20px;
-  height: 20px;
+	width: 20px;
+	height: 20px;
 }
 
 .bg-white {
-  background-color: #ffffff;
+	background-color: #ffffff;
 }
 
 .btn-border {
-  border: 1px solid #b3b3b3;
+	border: 1px solid #b3b3b3;
 }
 
 /*페이지 버튼*/
 .ul-li {
-  margin-top: 60px;
-  list-style: none;
-  display: flex;
-  flex-direction: row;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+	margin-top: 60px;
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+	-webkit-box-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	justify-content: center;
 }
+
 .li-btn {
-  padding-left: 10px;
+	padding-left: 10px;
 }
+
 .btn-2 {
-  display: flex;
-  flex-direction: row;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  color: rgb(51, 51, 51);
-  line-height: 34px;
+	display: flex;
+	flex-direction: row;
+	-webkit-box-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	justify-content: center;
+	color: rgb(51, 51, 51);
+	line-height: 34px;
 }
 
 hr.line-black {
-  border: 0px;
-  height: 2px;
-  background-color: black;
-  margin: 4px;
+	border: 0px;
+	height: 2px;
+	background-color: black;
+	margin: 4px;
 }
+
 hr.line-gray {
-  border: 0px;
-  height: 1px;
-  background-color: #b3b3b3;
-  margin: 4px;
+	border: 0px;
+	height: 1px;
+	background-color: #b3b3b3;
+	margin: 4px;
 }
+
 .btn-2 {
-  display: flex;
-  flex-direction: row;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  color: rgb(51, 51, 51);
-  line-height: 34px;
+	display: flex;
+	flex-direction: row;
+	-webkit-box-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	justify-content: center;
+	color: rgb(51, 51, 51);
+	line-height: 34px;
 }
 </style>
 <body>
 	<section class="notice">
 		<div class="page-title">
 			<div class="container">
-				<h3>게시판</h3>
+				<h3 onclick="location.href='${contextPath}/board/main.do?'">게시판</h3>
 			</div>
 		</div>
 
@@ -282,11 +293,20 @@ hr.line-gray {
 		<div id="board-search">
 			<div class="container">
 				<div class="search-window">
-					<form action="">
+					<form name="form" method="post"
+						action="${pageContext.request.contextPath}/board/main.do">
 						<div class="search-wrap">
-							<label for="search" class="blind">게시판 내용 검색</label> <input
-								id="search" type="search" name="search"
-								placeholder="검색어를 입력해주세요." value="">
+							<label for="search" class="blind">게시판 내용 검색</label>
+
+							<!-- 카테고리 -->
+							<select name="category" id="category">
+								<option value="all">선택</option>
+								<option value="name">작성자</option>
+								<option value="content">내용</option>
+							</select>
+							<!-- 검색창 -->
+							<input id="search" type="search" name="search"
+								placeholder="검색어를 입력해주세요.">
 							<button type="submit" class="btn btn-dark">검색</button>
 						</div>
 					</form>
@@ -302,6 +322,7 @@ hr.line-gray {
 						<tr>
 							<th scope="col" class="th-num">번호</th>
 							<th scope="col" class="th-title">제목</th>
+							<th scope="col" class="th-date">작성자</th>
 							<th scope="col" class="th-date">등록일</th>
 						</tr>
 					</thead>
@@ -316,6 +337,7 @@ hr.line-gray {
 										<td>${boardList.boardNo}</td>
 										<td
 											onclick="location.href='${contextPath}/board/mainDetail.do?boardNo=${boardList.boardNo}';">${boardList.title}</td>
+										<td>${boardList.name}</td>
 										<td>${boardList.formattedCreDate}</td>
 									</tr>
 								</c:forEach>
@@ -334,63 +356,41 @@ hr.line-gray {
 						onclick="location.href='${contextPath}/board/mainDetailForm.do'">
 						글쓰기</button>
 				</div>
+			</div>
 
-
-				<!-- 페이징 처리 -->
-			 <div>
-      <ul class="ul-li">
-        <c:if test="${section>1}">
-          <li class="li-btn">
-            <a
-              href="${contextPath}/board/main.do?section=${section-1}&pageNum=1"
-              class="btn-2 btn-square bg-white btn-border"
-            >
-              <img
-                width="20px"
-                height="20px"
-                src="${contextPath}/img/icon/prev.png"
-                alt="prev"
-              />
-            </a>
-          </li>
-        </c:if>
-        <c:set
-          var="end"
-          value="${Math.ceil((totalBoardListNum - (section-1)*100) div 10)}"
-        />
-        <c:if test="${end>10}">
-          <c:set var="end" value="10" />
-        </c:if>
-        <c:forEach begin="1" end="${end}" var="i">
-          <li class="li-btn">
-            <a
-              href="${contextPath}/board/main.do?section=${section}&pageNum=${i}"
-              class="btn-2 btn-square bg-white btn-border"
-              >${((section-1)*10)+i}</a
-            >
-          </li>
-        </c:forEach>
-        <c:if test="${section*100<totalBoardListNum}">
-          <li class="li-btn">
-            <a
-              href="${contextPath}/board/main.do?section=${section+1}&pageNum=1"
-              class="btn-2 btn-square bg-white btn-border"
-            >
-              <img
-                width="20px"
-                height="20px"
-                src="${contextPath}/img/icon/next.png"
-                alt="next"
-              />
-            </a>
-          </li>
-        </c:if>
-      </ul>
-    </div>
-    
-    
-    
-
+			<!-- 페이징 처리 -->
+			<div>
+				<ul class="ul-li">
+					<c:if test="${section>1}">
+						<li class="li-btn"><a
+							href="${contextPath}/board/main.do?section=${section-1}&pageNum=1"
+							class="btn-2 btn-square bg-white btn-border"> <img
+								width="20px" height="20px"
+								src="${contextPath}/img/icon/prev.png" alt="prev" />
+						</a></li>
+					</c:if>
+					<c:set var="end"
+						value="${Math.ceil((totalBoardListNum - (section-1)*100) div 10)}" />
+					<c:if test="${end>10}">
+						<c:set var="end" value="10" />
+					</c:if>
+					<c:forEach begin="1" end="${end}" var="i">
+						<li class="li-btn"><a
+							href="${contextPath}/board/main.do?section=${section}&pageNum=${i}"
+							class="btn-2 btn-square bg-white btn-border">${((section-1)*10)+i}</a>
+						</li>
+					</c:forEach>
+					<c:if test="${section*100<totalBoardListNum}">
+						<li class="li-btn"><a
+							href="${contextPath}/board/main.do?section=${section+1}&pageNum=1"
+							class="btn-2 btn-square bg-white btn-border"> <img
+								width="20px" height="20px"
+								src="${contextPath}/img/icon/next.png" alt="next" />
+						</a></li>
+					</c:if>
+				</ul>
+			</div>
+		</div>
 	</section>
 </body>
 </html>

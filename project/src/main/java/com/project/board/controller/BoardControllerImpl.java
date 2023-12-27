@@ -41,7 +41,23 @@ public class BoardControllerImpl implements BoardController {
 		
 		String pageNum = (String) pagingMap.get("pageNum");
 		String section = (String) pagingMap.get("section");
+		
+		// 카테고리 불러오기
+		String category = request.getParameter("category");
+		if (category == null || category.trim().isEmpty()) {
+		    // 유효하지 않은 카테고리 값에 대한 처리
+		    category = ""; // 기본값 설정 또는 예외 처리
+		}
+		pagingMap.put("category", category);
 
+		// 검색 내용 불러오기
+		String search = request.getParameter("search");
+		if (search == null) {
+		    // 유효하지 않은 검색어에 대한 처리
+		    search = ""; // 빈 문자열 또는 다른 기본값 설정
+		}
+		pagingMap.put("search", search);
+		
 		if (pageNum == null || pageNum.trim().length() < 1) {
 		    pageNum = "1";
 		    pagingMap.put("pageNum", pageNum);
@@ -66,7 +82,7 @@ public class BoardControllerImpl implements BoardController {
 		    System.out.println("boardList = " + boardList);
 		    // 로그 출력: 현재 조회된 북마크 목록 출력
 
-		    int totalBoardListNum = boardService.selectBoardListTotalNum();
+		    int totalBoardListNum = boardService.selectBoardListTotalNum(pagingMap);
 		    mav.addObject("totalBoardListNum", totalBoardListNum);
 		    // 총 북마크 개수를 가져와 ModelAndView에 추가
 
@@ -93,16 +109,15 @@ public class BoardControllerImpl implements BoardController {
 		 * + mav); return mav;
 		 */
 	}
-
 	@Override
-	@RequestMapping(value = "/board/*Form.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String) request.getAttribute("viewName");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
+	@RequestMapping(value = "/board/searchBoard.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView searchBoard( HttpServletRequest request, HttpServletResponse response) throws Exception{
+		ModelAndView mav = new ModelAndView("redirect:/board/main.do");
+		
 		return mav;
 	}
 
+	
 	@Override
 	@RequestMapping(value = "/board/saveBoard.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView saveBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -139,6 +154,15 @@ public class BoardControllerImpl implements BoardController {
 		mav.addObject("boardSearchList", boardSearchList);
 		mav.setViewName("/board/mainDetail");
 		System.out.println("boardSearchList = " + boardSearchList);
+		return mav;
+	}
+	
+	@Override
+	@RequestMapping(value = "/board/*Form.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName(viewName);
 		return mav;
 	}
 
