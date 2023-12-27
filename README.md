@@ -1,6 +1,6 @@
 # 게시판 미니 프로젝트 (개인)
-
 <br>
+
 #### IDE(통합개발도구) : sts 4버전<br>
 #### 프레임워크: spring boot, mybatis <br>
 #### 데이터베이스:  mysql 8 버전 <br>
