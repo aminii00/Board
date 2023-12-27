@@ -2,50 +2,107 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.board.dao.BoardDAO">
-    <resultMap id="BoardResult" type="BoardVO">
-        <result property="boardNo" column="boardNo" />
-        <result property="title" column="title" />
-        <result property="content" column="content" />
-        <result property="creDate" column="creDate" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime" />
-        <result property="status" column="status" />
-        <result property="parentNo" column="parentNo" />
-        <result property="name" column="name" />
-        <result property="imageFileName" column="imageFileName" />
-        <result property="tag" column="tag" />
-    </resultMap>
+	<resultMap id="BoardResult" type="BoardVO">
+		<result property="boardNo" column="boardNo" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="creDate" column="creDate" jdbcType="TIMESTAMP"
+			javaType="java.time.LocalDateTime" />
+		<result property="status" column="status" />
+		<result property="parentNo" column="parentNo" />
+		<result property="name" column="name" />
+		<result property="imageFileName" column="imageFileName" />
+		<result property="tag" column="tag" />
+	</resultMap>
 
-    <select id="boardList" resultMap="BoardResult">
-        select * from t_board
-    </select>
+	<select id="boardList" resultMap="BoardResult">
+		select * from t_board
+	</select>
 
-    <select id="NewBoardNo" resultType="int">
+	<select id="NewBoardNo" resultType="int">
         <![CDATA[
             SELECT ifnull(MAX(boardNo),0)+1 FROM t_board;
         ]]>
     </select>
-    
-    <select id="boardSearchList" parameterType="int" resultType="BoardVO">
+
+	<select id="boardSearchList" parameterType="int" resultType="BoardVO">
         <![CDATA[
             SELECT * FROM t_board where boardNo = #{boardNo};
         ]]>
     </select>
 
-    <insert id="saveBoard" parameterType="BoardVO">
+	<insert id="saveBoard" parameterType="BoardVO">
         <![CDATA[
             insert into t_board(boardNo, title, content, status, parentNo, name, imageFileName, tag)
             values(#{boardNo}, #{title}, #{content}, '대기중', 0, #{name}, #{imageFileName}, #{tag})
         ]]>
     </insert>
+
+
+<!-- selectBoardListWithPagingMap in BoardDAO.xml -->
+<select id="selectBoardListWithPagingMap" parameterType="java.util.Map" resultMap="BoardResult">
+
+    SELECT * FROM t_board
+    where 1=1
     
+     <choose>
+         <when test="category==null or category==''">
+            and 1=1
+         </when>
+         
+         <when test="category=='all'">
+            and title like CONCAT('%', #{search}, '%')
+            or name like CONCAT('%', #{search}, '%')
+            or content like CONCAT('%', #{search}, '%')
+         </when>
+         <otherwise>
+             <choose>
+                <when test="category=='title'">
+                   and title like CONCAT('%', #{search}, '%')
+                </when>
+                <when test="category=='name'">
+                   and name like CONCAT('%', #{search}, '%')
+                </when>
+                <when test="category=='content'">
+                   and content like CONCAT('%', #{search}, '%')
+                </when>
+             </choose>
+         </otherwise>
+      </choose>
+    order by boardNo desc limit #{start},10
     
-    <select id="selectBoardListWithPagingMap" parameterType="java.util.Map" resultMap="BoardResult">
-    select * from t_board
-    limit #{start}, 10
 </select>
 
-	<select id="selectBoardListTotalNum" resultType="int">
-		select count(boardNo) from t_board 
-	</select>
-	
-	
+
+
+
+<!-- selectBoardListTotalNum in BoardDAO.xml -->
+  <select id="selectBoardListTotalNum" parameterType="java.util.Map" resultType="int">
+      select count(*) from t_board
+        WHERE 1=1
+    <choose>
+        <when test="category==null or category==''">
+            AND 1=1
+        </when>
+        <when test="category=='all'">
+            AND (title LIKE CONCAT('%', #{search}, '%')
+            OR name LIKE CONCAT('%', #{search}, '%')
+            OR content LIKE CONCAT('%', #{search}, '%'))
+        </when>
+        <otherwise>
+            <choose>
+                <when test="category=='title'">
+                    AND title LIKE CONCAT('%', #{search}, '%')
+                </when>
+                <when test="category=='name'">
+                    AND name LIKE CONCAT('%', #{search}, '%')
+                </when>
+                <when test="category=='content'">
+                    AND content LIKE CONCAT('%', #{search}, '%')
+                </when>
+            </choose>
+        </otherwise>
+    </choose>
+   </select>
+
 </mapper>

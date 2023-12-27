@@ -15,7 +15,7 @@ public interface BoardService {
 	
 	public BoardVO boardSearchList(int boardNo);
 	
-	public int selectBoardListTotalNum();
+	public int selectBoardListTotalNum(Map pagingMap);
 	
 	public List<BoardVO> selectBoardListWithPagingMap(Map pagingMap);
 

@@ -22,5 +22,5 @@ public interface BoardDAO {
 	
 	public List<BoardVO> selectBoardListWithPagingMap(Map condMap);
 
-	public int selectBoardListTotalNum();
+	public int selectBoardListTotalNum(Map condMap);
 }
