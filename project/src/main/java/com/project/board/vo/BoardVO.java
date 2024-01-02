@@ -10,16 +10,10 @@ public class BoardVO {
     private int boardNo;
     private String title;
     private String content;
-    private String status;
-    private int parentNo;
     private String name;
     private String imageFileName;
-    private String tag;
     private LocalDateTime creDate;
 
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
 
     public int getBoardNo() {
         return boardNo;
@@ -57,21 +51,6 @@ public class BoardVO {
         this.creDate = creDate;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getParentNo() {
-        return parentNo;
-    }
-
-    public void setParentNo(int parentNo) {
-        this.parentNo = parentNo;
-    }
 
     public String getName() {
         return name;
@@ -89,14 +68,10 @@ public class BoardVO {
         this.imageFileName = imageFileName;
     }
 
-    public String getTag() {
-        return tag;
-    }
-
     @Override
     public String toString() {
         return "BoardVO [boardNo=" + boardNo + ", title=" + title + ", content=" + content + ", creDate=" + creDate
-                + ", status=" + status + ", parentNo=" + parentNo + ", name=" + name + ", imageFileName="
-                + imageFileName + ", tag=" + tag + "]";
+                + ", name=" + name + ", imageFileName="
+                + imageFileName + "]";
     }
 }

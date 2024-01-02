@@ -15,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.board.dao.BoardDAO;
 import com.project.board.service.BoardServiceImpl;
 import com.project.board.vo.BoardVO;
+import com.project.common.file.FileUploadController;
 import com.project.common.file.GeneralFileUploader;
 
 @Controller("boardController")
@@ -120,33 +122,45 @@ public class BoardControllerImpl implements BoardController {
 	
 	@Override
 	@RequestMapping(value = "/board/saveBoard.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView saveBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView saveBoard(MultipartHttpServletRequest  request) throws Exception {
+		 request.setCharacterEncoding("UTF-8");
 		ModelAndView mav = new ModelAndView("redirect:/board/main.do");
+		
 
 		String title = request.getParameter("title");
 		String name = request.getParameter("name");
 		String content = request.getParameter("content");
-		String imageFileName = request.getParameter("imageFileName");
-		String tag = request.getParameter("tag");
+		/* String tag = request.getParameter("tag"); */
+
+		
+		int NewBoardNo = boardService.NewBoardNo();
+		
+		List fileList = GeneralFileUploader.upload(request, "/image/" + NewBoardNo);
+		String imageFileName = (String) fileList.get(0);
+		System.out.println("fileList : " + fileList);
+		System.out.println("imageFileName : " + imageFileName);
 
 		BoardVO board = new BoardVO();
 		board.setTitle(title);
 		board.setName(name);
 		board.setContent(content);
-		board.setImageFileName(imageFileName);
-		board.setTag(tag);
+
+	    // 여러 파일이 업로드될 경우, 파일 이름들을 쉼표로 구분하여 저장
+	    board.setImageFileName(imageFileName);
+		/* board.setTag(tag); */
 
 		// 게시글 저장
-		int NewBoardNo = boardService.NewBoardNo();
 		board.setBoardNo(NewBoardNo);
 		boardService.saveBoard(board);
 
 		return mav;
+		
 	}
 
 	@Override
 	@RequestMapping(value = "/board/mainDetail.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView boardDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView boardDetail(HttpServletRequest request, HttpServletResponse sresponse) throws Exception {
+		 request.setCharacterEncoding("UTF-8");
 		ModelAndView mav = new ModelAndView();
 		String boardNo1 = request.getParameter("boardNo");
 		int boardNo = Integer.parseInt(boardNo1);
@@ -160,6 +174,7 @@ public class BoardControllerImpl implements BoardController {
 	@Override
 	@RequestMapping(value = "/board/*Form.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		 request.setCharacterEncoding("UTF-8");
 		String viewName = (String) request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
