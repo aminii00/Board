@@ -5,7 +5,6 @@
 #### 프레임워크: spring boot, mybatis <br>
 #### 데이터베이스:  mysql 8 버전 <br>
 #### git, github <br> <br>
-![image](https://github.com/aminii00/Board/assets/89954944/f5ff946b-a095-4d03-8b67-1e2c653761f2)
+![image](https://github.com/aminii00/Board/assets/89954944/8096ad82-d64b-4eb7-bb59-80702f0758b9)
 <br>
-<br>
-<br>
+![image](https://github.com/aminii00/Board/assets/89954944/34259cac-c7b1-439a-b61c-d130e5ad7220)
