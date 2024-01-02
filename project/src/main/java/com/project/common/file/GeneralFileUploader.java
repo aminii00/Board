@@ -13,9 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 public class GeneralFileUploader {
-public static String CURR_IMAGE_REPO_PATH;
+	public static String CURR_IMAGE_REPO_PATH;
 	
 	
 	public GeneralFileUploader(String repopath) {
@@ -33,7 +34,6 @@ public static String CURR_IMAGE_REPO_PATH;
 			map.put(name, value);
 		}
 		return map;
-		
 		
 	}
 	
@@ -56,7 +56,8 @@ public static String CURR_IMAGE_REPO_PATH;
 	}
 	
 	public static List upload(MultipartHttpServletRequest multipartHttpServletRequest,String repopath) throws IllegalStateException, IOException{
-		CURR_IMAGE_REPO_PATH = "c:/oneeats/file_repo"+repopath;
+		CURR_IMAGE_REPO_PATH = "c:/board/file_repo"+repopath;
+		System.out.println("CURR_IMAGE_REPO_PATH= " + CURR_IMAGE_REPO_PATH);
 
 		return upload(multipartHttpServletRequest);
 	}
@@ -80,8 +81,10 @@ public static String CURR_IMAGE_REPO_PATH;
 		while (fileNames.hasNext()) {
 			String fileName = (String) fileNames.next();
 			MultipartFile mFile = multipartHttpServletRequest.getFile(fileName);
+			System.out.println("mFile= " + mFile);
 			String originalFileName = mFile.getOriginalFilename();
 			fileList.add(originalFileName);
+			System.out.println("originalFileName= " + originalFileName);
 			File file = new File(CURR_IMAGE_REPO_PATH+"\\"+fileName);
 			if (mFile.getSize()!=0) {
 				if (!file.exists()) {
@@ -100,7 +103,7 @@ public static String CURR_IMAGE_REPO_PATH;
 
 	
 	public static void removeFile(String fileName,String repopath) {
-		CURR_IMAGE_REPO_PATH = "c:/board/file_repo"+repopath;
+		CURR_IMAGE_REPO_PATH = "c:/oneeats/file_repo"+repopath;
 		String f = CURR_IMAGE_REPO_PATH+"\\"+fileName;
 		File file = new File(f);
 		if (file.exists()) {

@@ -8,11 +8,8 @@
 		<result property="content" column="content" />
 		<result property="creDate" column="creDate" jdbcType="TIMESTAMP"
 			javaType="java.time.LocalDateTime" />
-		<result property="status" column="status" />
-		<result property="parentNo" column="parentNo" />
 		<result property="name" column="name" />
 		<result property="imageFileName" column="imageFileName" />
-		<result property="tag" column="tag" />
 	</resultMap>
 
 	<select id="boardList" resultMap="BoardResult">
@@ -33,8 +30,8 @@
 
 	<insert id="saveBoard" parameterType="BoardVO">
         <![CDATA[
-            insert into t_board(boardNo, title, content, status, parentNo, name, imageFileName, tag)
-            values(#{boardNo}, #{title}, #{content}, '대기중', 0, #{name}, #{imageFileName}, #{tag})
+            insert into t_board(boardNo, title, content, name, imageFileName)
+            values(#{boardNo}, #{title}, #{content}, #{name}, #{imageFileName})
         ]]>
     </insert>
 

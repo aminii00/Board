@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import net.coobird.thumbnailator.Thumbnails;
 
-
 @Controller
 public class FileDownloadController {
 	private static String IMAGE_REPO_PATH = "c:\\board\\file_repo";
