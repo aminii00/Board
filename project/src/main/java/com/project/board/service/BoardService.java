@@ -18,5 +18,7 @@ public interface BoardService {
 	public int selectBoardListTotalNum(Map pagingMap);
 	
 	public List<BoardVO> selectBoardListWithPagingMap(Map pagingMap);
+	
+	public void boardCancel(int boardNo);
 
 }

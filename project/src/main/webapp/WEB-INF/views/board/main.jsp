@@ -353,7 +353,7 @@ hr.line-gray {
 				<br>
 				<div style="float: right">
 					<button class="btn-toform btn-dark"
-						onclick="location.href='${contextPath}/board/mainDetailForm.do'">
+						onclick="location.href='${contextPath}/board/mainDetailForm.do?boardNo=0000';">
 						글쓰기</button>
 				</div>
 			</div>

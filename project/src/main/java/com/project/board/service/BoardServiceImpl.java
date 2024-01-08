@@ -52,4 +52,9 @@ public class BoardServiceImpl implements BoardService {
 		int num = boardDAO.selectBoardListTotalNum(pagingMap);
 		return num;
 	}
+	
+	@Override
+	public void boardCancel(int boardNo) {
+		boardDAO.boardCancel(boardNo);
+	}
 }

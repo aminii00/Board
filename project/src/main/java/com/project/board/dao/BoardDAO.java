@@ -23,4 +23,6 @@ public interface BoardDAO {
 	public List<BoardVO> selectBoardListWithPagingMap(Map condMap);
 
 	public int selectBoardListTotalNum(Map condMap);
+	
+	public void boardCancel(int boardNo);
 }

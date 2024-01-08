@@ -118,7 +118,30 @@ public class BoardControllerImpl implements BoardController {
 		
 		return mav;
 	}
-
+	
+	@Override
+	@RequestMapping(value = "/board/boardMod.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView boardMod( HttpServletRequest request, HttpServletResponse response) throws Exception{
+		ModelAndView mav = new ModelAndView("redirect:/board/mainDetailForm.do");
+		String boardNo_ = request.getParameter("boardNo");
+		int boardNo = Integer.parseInt(boardNo_);
+		BoardVO boardSearchList = boardService.boardSearchList(boardNo);
+		// HttpSession 객체를 얻어온다.
+		HttpSession session = request.getSession();
+		// boardSearchList를 세션에 저장한다.
+		session.setAttribute("boardSearchList", boardSearchList);
+		return mav;
+	}
+	
+	@Override
+	@RequestMapping(value = "/board/boardCancel.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView boardCancel( HttpServletRequest request, HttpServletResponse response) throws Exception{
+		ModelAndView mav = new ModelAndView("redirect:/board/main.do");
+		String boardNo_ = request.getParameter("boardNo");
+		int boardNo = Integer.parseInt(boardNo_);
+		boardService.boardCancel(boardNo);
+		return mav;
+	}
 	
 	@Override
 	@RequestMapping(value = "/board/saveBoard.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -126,7 +149,6 @@ public class BoardControllerImpl implements BoardController {
 		 request.setCharacterEncoding("UTF-8");
 		ModelAndView mav = new ModelAndView("redirect:/board/main.do");
 		
-
 		String title = request.getParameter("title");
 		String name = request.getParameter("name");
 		String content = request.getParameter("content");
@@ -178,6 +200,16 @@ public class BoardControllerImpl implements BoardController {
 		String viewName = (String) request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
+		String boardNo = request.getParameter("boardNo");
+		if(boardNo=="0000") {
+			HttpSession session = request.getSession();
+			session.removeAttribute("속성이름");
+		}else {
+		HttpSession session = request.getSession();
+		BoardVO boardSearchList = (BoardVO) session.getAttribute("boardSearchList");
+		mav.addObject("boardSearchList",boardSearchList);
+		}
+		
 		return mav;
 	}
 

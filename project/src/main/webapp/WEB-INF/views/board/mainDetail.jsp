@@ -45,8 +45,8 @@ request.setCharacterEncoding("utf-8");
 			</div> --%>
 
 			<div>
-				<button type="submit" class="btn btn-sm btn-primary" id="btnSave">수정</button>
-				<button type="button" class="btn btn-sm btn-primary" id="btnList">삭제</button>
+				<button type="button" onclick="location.href='${contextPath}/board/boardMod.do?boardNo=${boardSearchList.boardNo}';" class="btn btn-sm btn-primary" id="btnSave">수정</button>
+				<button type="button" onclick="location.href='${contextPath}/board/boardCancel.do?boardNo=${boardSearchList.boardNo}';" class="btn btn-sm btn-primary" id="btnList">삭제</button>
 				<button type="button"
 					onclick="location.href='${contextPath}/board/main.do?'"
 					class="btn btn-sm btn-primary" id="btnList">목록</button>

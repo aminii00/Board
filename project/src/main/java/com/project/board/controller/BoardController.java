@@ -13,4 +13,7 @@ public interface BoardController {
 	  public ModelAndView saveBoard(MultipartHttpServletRequest  request) throws Exception;
 	  public ModelAndView boardDetail( HttpServletRequest request, HttpServletResponse response) throws Exception;
 	  public ModelAndView searchBoard( HttpServletRequest request, HttpServletResponse response) throws Exception;
+	  public ModelAndView boardMod( HttpServletRequest request, HttpServletResponse response) throws Exception;
+	  public ModelAndView boardCancel( HttpServletRequest request, HttpServletResponse response) throws Exception;
+
 }

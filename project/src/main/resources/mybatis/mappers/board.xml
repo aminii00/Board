@@ -36,70 +36,65 @@
     </insert>
 
 
-<!-- selectBoardListWithPagingMap in BoardDAO.xml -->
-<select id="selectBoardListWithPagingMap" parameterType="java.util.Map" resultMap="BoardResult">
+	<!-- selectBoardListWithPagingMap in BoardDAO.xml -->
+	<select id="selectBoardListWithPagingMap" parameterType="java.util.Map"
+		resultMap="BoardResult"> SELECT * FROM t_board where 1=1 <choose>
+			<when test="category==null or category==''">
+				and 1=1
+			</when>
 
-    SELECT * FROM t_board
-    where 1=1
-    
-     <choose>
-         <when test="category==null or category==''">
-            and 1=1
-         </when>
-         
-         <when test="category=='all'">
-            and title like CONCAT('%', #{search}, '%')
-            or name like CONCAT('%', #{search}, '%')
-            or content like CONCAT('%', #{search}, '%')
-         </when>
-         <otherwise>
-             <choose>
-                <when test="category=='title'">
-                   and title like CONCAT('%', #{search}, '%')
-                </when>
-                <when test="category=='name'">
-                   and name like CONCAT('%', #{search}, '%')
-                </when>
-                <when test="category=='content'">
-                   and content like CONCAT('%', #{search}, '%')
-                </when>
-             </choose>
-         </otherwise>
-      </choose>
-    order by boardNo desc limit #{start},10
-    
-</select>
+			<when test="category=='all'">
+				and title like CONCAT('%', #{search}, '%')
+				or name like CONCAT('%', #{search}, '%')
+				or content like CONCAT('%', #{search}, '%')
+			</when>
+			<otherwise>
+				<choose>
+					<when test="category=='title'">
+						and title like CONCAT('%', #{search}, '%')
+					</when>
+					<when test="category=='name'">
+						and name like CONCAT('%', #{search}, '%')
+					</when>
+					<when test="category=='content'">
+						and content like CONCAT('%', #{search}, '%')
+					</when>
+				</choose>
+			</otherwise>
+		</choose>
+		order by boardNo desc limit #{start},10 </select>
 
 
+	<!-- selectBoardListTotalNum in BoardDAO.xml -->
+	<select id="selectBoardListTotalNum" parameterType="java.util.Map"
+		resultType="int"> select count(*) from t_board WHERE 1=1 <choose>
+			<when test="category==null or category==''">
+				AND 1=1
+			</when>
+			<when test="category=='all'">
+				AND (title LIKE CONCAT('%', #{search}, '%')
+				OR name LIKE CONCAT('%', #{search}, '%')
+				OR content LIKE CONCAT('%', #{search}, '%'))
+			</when>
+			<otherwise>
+				<choose>
+					<when test="category=='title'">
+						AND title LIKE CONCAT('%', #{search}, '%')
+					</when>
+					<when test="category=='name'">
+						AND name LIKE CONCAT('%', #{search}, '%')
+					</when>
+					<when test="category=='content'">
+						AND content LIKE CONCAT('%', #{search}, '%')
+					</when>
+				</choose>
+			</otherwise>
+		</choose>
+	</select>
 
-
-<!-- selectBoardListTotalNum in BoardDAO.xml -->
-  <select id="selectBoardListTotalNum" parameterType="java.util.Map" resultType="int">
-      select count(*) from t_board
-        WHERE 1=1
-    <choose>
-        <when test="category==null or category==''">
-            AND 1=1
-        </when>
-        <when test="category=='all'">
-            AND (title LIKE CONCAT('%', #{search}, '%')
-            OR name LIKE CONCAT('%', #{search}, '%')
-            OR content LIKE CONCAT('%', #{search}, '%'))
-        </when>
-        <otherwise>
-            <choose>
-                <when test="category=='title'">
-                    AND title LIKE CONCAT('%', #{search}, '%')
-                </when>
-                <when test="category=='name'">
-                    AND name LIKE CONCAT('%', #{search}, '%')
-                </when>
-                <when test="category=='content'">
-                    AND content LIKE CONCAT('%', #{search}, '%')
-                </when>
-            </choose>
-        </otherwise>
-    </choose>
-   </select>
+	<delete id="boardCancel" parameterType="int">
+		DELETE FROM t_board
+		WHERE boardNo=#{boardNo}
+	</delete>
 
 </mapper>
